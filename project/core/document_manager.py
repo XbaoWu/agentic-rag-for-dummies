@@ -1,7 +1,7 @@
 from pathlib import Path
 import shutil
 import config
-from utils import pdfs_to_markdowns
+from utils import pdfs_to_markdowns, clear_directory_contents
 
 class DocumentManager:
 
@@ -63,9 +63,8 @@ class DocumentManager:
         return sorted([p.name.replace(".md", ".pdf") for p in self.markdown_dir.glob("*.md")])
     
     def clear_all(self):
-        if self.markdown_dir.exists():
-            shutil.rmtree(self.markdown_dir)
-            self.markdown_dir.mkdir(parents=True, exist_ok=True)
+        self.markdown_dir.mkdir(parents=True, exist_ok=True)
+        clear_directory_contents(self.markdown_dir)
         
         self.rag_system.parent_store.clear_store()
         self.rag_system.vector_db.delete_collection(self.rag_system.collection_name)

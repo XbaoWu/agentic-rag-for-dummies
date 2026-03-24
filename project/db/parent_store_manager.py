@@ -1,7 +1,7 @@
 import re
 import json
-import shutil
 import config
+from utils import clear_directory_contents
 from pathlib import Path
 from typing import List, Dict
 
@@ -47,6 +47,5 @@ class ParentStoreManager:
         return [self.load_content(pid) for pid in sorted(unique_ids, key=self._get_sort_key)]
     
     def clear_store(self) -> None:
-        if self.__store_path.exists():
-            shutil.rmtree(self.__store_path)
         self.__store_path.mkdir(parents=True, exist_ok=True)
+        clear_directory_contents(self.__store_path)

@@ -1,10 +1,24 @@
 import os
+import shutil
 import config
 import pymupdf.layout
 import pymupdf4llm
 from pathlib import Path
 import glob
 import tiktoken
+
+
+def clear_directory_contents(directory: Path) -> None:
+    """Delete everything under directory but not the directory itself (safe for Docker volume / bind mount roots)."""
+    directory = Path(directory)
+    if not directory.is_dir():
+        return
+    for child in directory.iterdir():
+        if child.is_dir():
+            shutil.rmtree(child)
+        else:
+            child.unlink()
+
 
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
